@@ -11,19 +11,29 @@ const Login = (props) => {
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
+  useEffect(() => {
+    console.log("EFFECT RUNNING");
+
+    //cleanup function
+    return () => {
+      console.log("EFFECT CLEANUP");
+    };
+  }, []); //If I put enteredPassword useState then effect running log would update on every key stroke for that input field
+
   //checking form validation
   useEffect(() => {
     //adding a clean up function
     const identifier = setTimeout(() => {
-      console.log('Checking form validity');
+      console.log("Checking form validity");
       setFormIsValid(
         enteredEmail.includes("@") && enteredPassword.trim().length > 6
       );
-    }, 500); //500 millisecond pause by user
+    }, 500); //500 millisecond pause by user; then the validitiy is rechecked
 
+    //clean up function; runs before every new side effect function updates/reruns
     return () => {
       console.log("CLEANUP");
-      clearTimeout(identifier);//clear the last timer before we set a new one
+      clearTimeout(identifier); //clear the last timer before we set a new one
     };
   }, [enteredEmail, enteredPassword]);
 
